@@ -1,18 +1,17 @@
 import jwt from 'jsonwebtoken'
 import config from "../config/config";
 import logging from "../config/logging";
+import {Model} from "sequelize";
 
 const NAMESPACE = 'Auth'
 
-// @ts-ignore
-const signJWT = (user, callback: (error: (Error | null), token: (string | null)) => void): void => {
+const signJWT = (user: Model<any, any>, callback: (error: (Error | null), token: (string | null)) => void): void => {
     const timeSinchEpoch = new Date().getTime()
     const expirationTime = timeSinchEpoch + Number(config.server.token.expireTime) * 100000
     const expirationTimeInSeconds = Math.floor(expirationTime / 1000)
-    logging.info(NAMESPACE, ''+timeSinchEpoch)
-    logging.info(NAMESPACE, ''+expirationTime)
-    logging.info(NAMESPACE, ''+expirationTimeInSeconds)
-    logging.info(NAMESPACE, ''+expirationTimeInSeconds)
+    logging.info(NAMESPACE, '' + timeSinchEpoch)
+    logging.info(NAMESPACE, '' + expirationTime)
+    logging.info(NAMESPACE, '' + expirationTimeInSeconds)
 
     try {
         jwt.sign(
@@ -20,7 +19,7 @@ const signJWT = (user, callback: (error: (Error | null), token: (string | null))
             config.server.token.secret,
             {
                 issuer: config.server.token.issuer,
-                algorithm: "ES256",
+                // algorithm: "ES256",
                 expiresIn: expirationTimeInSeconds
             },
             (e, token) => {

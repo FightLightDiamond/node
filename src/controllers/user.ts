@@ -3,12 +3,14 @@ import bcryptjs, {hash} from 'bcryptjs'
 import logging from "../config/logging";
 import signJWT from "../functions/signJWT";
 import User from "../models/user"
-import IUser from "../interfaces/user";
+import {Model} from "sequelize";
 
 const NAMESPACE = "User"
 
 const validateToken = (req: Request, res: Response, next: NextFunction) => {
-
+    return res.json({
+        message: 'Verify successfully'
+    })
 }
 
 const register = (req: Request, res: Response, next: NextFunction) => {
@@ -17,7 +19,7 @@ const register = (req: Request, res: Response, next: NextFunction) => {
         bcryptjs.hash(password, 10, (hashError: Error, hash: string) => {
             if (hashError) {
                 return res.status(500).json({
-                    msg: hashError.message,
+                    message: hashError.message,
                     error: hashError
                 })
             }
@@ -48,7 +50,7 @@ const register = (req: Request, res: Response, next: NextFunction) => {
 const login = async (req: Request, res: Response, next: NextFunction) => {
     let {email, password} = req.body
     const user = await User.findOne({where: {email: email}});
-    if(user) {
+    if (user instanceof Model) {
         // @ts-ignore
         bcryptjs.compare(password, user.password, (e, result) => {
             if (e) {
@@ -56,18 +58,21 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
                     msg: e.message,
                     error: e
                 })
-            } else if (result) {
-                // @ts-ignore
+            }
+
+            if (result) {
                 signJWT(user, (_e, token) => {
                     if (_e) {
                         return res.status(401).json({
                             msg: _e.message,
                             error: _e
                         })
-                    } else if(token) {
-                        res.status(200).json({
+                    }
+
+                    if (token) {
+                        return res.status(200).json({
                             message: 'Login Successfully',
-                            data: user
+                            data: {token}
                         })
                     }
                 })
@@ -80,8 +85,12 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-const getAllUsers = (req: Request, res: Response, next: NextFunction) => {
-
+const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
+    const users = await User.findAll()
+    res.status(200).json({
+        message: 'Get user successfully',
+        data: users
+    })
 }
 
 
