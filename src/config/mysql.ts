@@ -10,7 +10,6 @@ const params = {
 
 const Connect = async () => new Promise<mysql.Connection>((resolve, reject) => {
     const connection = mysql.createConnection(params)
-
     connection.connect(e => {
         if (e) {
             reject(e)

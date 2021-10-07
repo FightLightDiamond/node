@@ -13,7 +13,11 @@ const MYSQL = {
     port: MYSQL_PORT,
     database: MYSQL_DATABASE,
     user: MYSQL_USER,
-    password: MYSQL_PASSWORD
+    password: MYSQL_PASSWORD,
+    define: {
+        timestamp: true,
+        underscored: true
+    }
 }
 
 const SERVER_HOSTNAME = process.env.SERVER_HOSTNAME || 'localhost'

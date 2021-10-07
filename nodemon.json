@@ -1,6 +1,12 @@
 {
+  "restartable": "rs",
   "watch": ["src"],
-  "ext": "ts,json",
-  "ignore": ["src/**/*.spec.ts"],
-  "exec": "tsc && node dist/index.js"
+  "ext": "js,ts,json",
+  "execMap": {
+    "ts": "node -r ts-node/register"
+  },
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "ignore": ["src/**/*.spec.ts", ".git", "node_modules/", "dist/"]
 }

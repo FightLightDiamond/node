@@ -8,6 +8,8 @@ const corsOptions = {
 }
 const app = express();
 
+// debugger;
+
 /**
  * Use cors
  */
@@ -30,7 +32,9 @@ app.use('/static', express.static('public'))
  * Ues route
  */
 app.get('/', (req, res) => {
-    res.send('Hello world!');
+    let count = 3
+    // debugger
+    res.send('Hello world xxx!' + count);
 });
 
 app.use('/book', bookRouter)

@@ -15,13 +15,23 @@ const User = sequelize.define('User', {
     password: {
         type: DataTypes.STRING,
         allowNull: false
-    }
+    },
+    name: DataTypes.STRING,
+    bio: DataTypes.TEXT,
 }, {
     tableName: 'users',
-    timestamps: false,
+    timestamps: true,
     // Other model options go here
     // sequelize, // We need to pass the connection instance
+    underscored: true,
     modelName: 'User' // We need to choose the model name
 });
+
+// User.belongsTo();
+// User.hasOne();
+// User.hasMany();
+// User.belongsToMany( '3', {through: 'UserProject'});
+// User.hasOne();
+// User.hasOne();
 
 export default User
